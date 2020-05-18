@@ -1,4 +1,5 @@
 pub mod hollow_heap;
+pub use hollow_heap::HollowHeap;
 
 #[cfg(test)]
 #[macro_use]

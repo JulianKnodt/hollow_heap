@@ -21,11 +21,6 @@ impl<K: PartialOrd, V: PartialEq> HollowHeap<K, V> {
     }
   }
   pub fn peek(&self) -> Option<&V> { self.nodes.get(self.root)?.value.as_ref() }
-  pub fn push(&mut self, k: K, v: V) -> NodePtr {
-    let ptr = self.insert_node(Node::new(k, v));
-    self.len += 1;
-    ptr
-  }
   pub fn len(&self) -> usize { self.len }
   pub fn is_empty(&self) -> bool { self.len == 0 }
   pub fn decrease_root_key(&mut self, k: K) {
@@ -108,6 +103,11 @@ impl<K: PartialOrd, V: PartialEq> HollowHeap<K, V> {
       .children
       .extend(node.children.drain(new_node.rank as usize..));
     self.insert_node(new_node)
+  }
+  pub fn push(&mut self, k: K, v: V) -> NodePtr {
+    let ptr = self.insert_node(Node::new(k, v));
+    self.len += 1;
+    ptr
   }
   fn insert_node(&mut self, node: Node<K, V>) -> NodePtr {
     let idx = if let Some(reuse) = self.empty_slots.pop() {
